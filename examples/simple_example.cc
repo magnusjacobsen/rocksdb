@@ -10,6 +10,8 @@
 #include "rocksdb/slice.h"
 #include "rocksdb/options.h"
 
+#include <iostream>
+
 using namespace ROCKSDB_NAMESPACE;
 
 std::string kDBPath = "/tmp/rocksdb_simple_example";
@@ -22,6 +24,11 @@ int main() {
   options.OptimizeLevelStyleCompaction();
   // create the DB if it's not already present
   options.create_if_missing = true;
+
+  /* MY OWN STUFF
+     STATS!!
+  */
+  options.statistics = rocksdb::CreateDBStatistics();
 
   // open DB
   Status s = DB::Open(options, kDBPath, &db);
@@ -76,6 +83,13 @@ int main() {
   assert(pinnable_val == "value");
   pinnable_val.Reset();
   // The Slice pointed by pinnable_val is not valid after this point
+
+  /* OWN STUFF
+     Print stats stuff
+  */
+  std::cout << "bytes written: " << options.statistics->getTickerCount(BYTES_WRITTEN) << std::endl;
+
+  std::cout << "Lock() calls: " << (rocksdb::inc() - 1) << std::endl;
 
   delete db;
 
