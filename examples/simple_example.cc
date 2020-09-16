@@ -87,11 +87,9 @@ int main() {
   /* OWN STUFF
      Print stats stuff
   */
-  std::cout << "bytes written: " << options.statistics->getTickerCount(BYTES_WRITTEN) << std::endl;
-
-  std::cout << "Lock() calls: " << (rocksdb::inc() - 1) << std::endl;
-
   delete db;
 
+  std::cout << "instrumented_mutex_locks: " << options.statistics->getTickerCount(INSTRUMENTED_MUTEX_LOCK) << std::endl;
+  
   return 0;
 }

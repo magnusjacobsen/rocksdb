@@ -7,6 +7,7 @@
 #include "monitoring/perf_context_imp.h"
 #include "monitoring/thread_status_util.h"
 #include "test_util/sync_point.h"
+#include <iostream>
 
 namespace ROCKSDB_NAMESPACE {
 namespace {
@@ -22,18 +23,12 @@ Statistics* stats_for_report(Env* env, Statistics* stats) {
 #endif  // NPERF_CONTEXT
 }  // namespace
 
-int inc() {
-  static int counter = 0;
-  counter++;
-  return counter;
-}
-
 void InstrumentedMutex::Lock() {
   PERF_CONDITIONAL_TIMER_FOR_MUTEX_GUARD(
       db_mutex_lock_nanos, stats_code_ == DB_MUTEX_WAIT_MICROS,
       stats_for_report(env_, stats_), stats_code_);
+  rocksdb::RecordTick(stats_, INSTRUMENTED_MUTEX_LOCK, 1);
   LockInternal();
-  inc();
 }
 
 void InstrumentedMutex::LockInternal() {

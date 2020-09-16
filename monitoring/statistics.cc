@@ -192,6 +192,7 @@ const std::vector<std::pair<Tickers, std::string>> TickersNameMap = {
      "rocksdb.block.cache.compression.dict.add.redundant"},
     {FILES_MARKED_TRASH, "rocksdb.files.marked.trash"},
     {FILES_DELETED_IMMEDIATELY, "rocksdb.files.deleted.immediately"},
+    {INSTRUMENTED_MUTEX_LOCK, "rocksdb.instrumented.mutex.lock.count"}
 };
 
 const std::vector<std::pair<Histograms, std::string>> HistogramsNameMap = {
